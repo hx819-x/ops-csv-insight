@@ -1,0 +1,13 @@
+{
+  "name": "ops-csv-insight",
+  "version": "1.0.0",
+  "private": true,
+  "description": "运营数据观察室",
+  "scripts": {
+    "test": "node --test test.cjs"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>运营数据观察室</title>
+    <meta
+      name="description"
+      content="运营数据观察室 · 本地运行的开源练习工具"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .trend-row {
+        display: grid;
+        grid-template-columns: 95px 1fr 48px;
+        gap: 14px;
+        align-items: center;
+        font-size: 12px;
+        margin: 12px 0;
+      }
+      .trend-row strong {
+        text-align: right;
+      }
+      .quality {
+        font-size: 13px;
+        padding-top: 16px;
+      }
+      .quality strong {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <span class="mark">OI</span><span class="brand">运营数据观察室</span
+        ><small>本地运行 · 无需登录 · 开源</small>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">02 / Data literacy</div>
+          <h1>先看清数据，再讨论增长。</h1>
+          <p>
+            导入每日渠道数据，检查异常行，按一致口径比较点击与转化。所有计算都在本地完成。
+          </p>
+        </div>
+        <div class="actions">
+          <button id="demo">加载模拟数据</button
+          ><button id="export">导出分析报告</button
+          ><button id="clean">导出清洗数据</button>
+        </div>
+      </section>
+      <div class="notice warning">
+        示例为模拟投放数据，不代表真实业绩。漏斗假设：同一统计口径下，转化数 ≤
+        点击数 ≤ 曝光数。
+      </div>
+      <div
+        id="notice"
+        class="notice"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
+      <div class="workspace">
+        <aside class="stack">
+          <section class="panel">
+            <h2>01 / 数据来源</h2>
+            <div class="field">
+              <label for="file">选择 UTF-8 CSV（≤ 1 MB）</label
+              ><input id="file" type="file" accept=".csv,text/csv" />
+            </div>
+            <div class="field">
+              <label for="csv">或粘贴 CSV 内容</label
+              ><textarea
+                id="csv"
+                class="code"
+                spellcheck="false"
+                aria-describedby="schema"
+              ></textarea>
+            </div>
+            <p id="schema" class="help">
+              固定字段：date, channel, impressions, clicks, conversions,
+              spend。每行是一日、一个渠道的数据。
+            </p>
+            <button id="analyze" class="primary">检查并分析</button>
+            <div id="quality"></div>
+          </section>
+          <section class="panel">
+            <h2>指标口径</h2>
+            <p class="compact">
+              点击率 = 点击 ÷ 曝光<br />转化率 = 转化 ÷ 点击<br />每次转化成本 =
+              花费 ÷ 转化<br />汇总比率使用总量相除，不平均各行比率。分母为零时显示“—”。
+            </p>
+            <p class="help">
+              本工具不接入平台后台。跨平台归因差异、币种与统计周期必须由使用者确认。
+            </p>
+          </section>
+        </aside>
+        <div class="stack">
+          <section class="panel">
+            <div class="section-title">
+              <h2>02 / 范围与概览</h2>
+              <span id="range" class="pill"></span>
+            </div>
+            <div class="toolbar">
+              <div class="field">
+                <label for="channel">渠道</label
+                ><select id="channel">
+                  <option value="">全部渠道</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="from">开始日期</label
+                ><input id="from" type="date" />
+              </div>
+              <div class="field">
+                <label for="to">结束日期</label><input id="to" type="date" />
+              </div>
+            </div>
+            <div class="cards" id="stats"></div>
+            <p id="scope" class="help"></p>
+          </section>
+          <section class="panel">
+            <h2>03 / 渠道对比</h2>
+            <div id="channels" class="table-wrap"></div>
+          </section>
+          <section class="panel">
+            <h2>04 / 每日转化</h2>
+            <p class="help">
+              柱长仅比较当前范围内的转化次数；同时显示精确数值。
+            </p>
+            <div id="trend"></div>
+          </section>
+          <section class="panel">
+            <h2>05 / 被排除的数据</h2>
+            <p class="help">
+              错误行与重复主键均排除，不静默计入。修正后可重新导入。
+            </p>
+            <div id="issues" class="table-wrap"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+    <footer>
+      hx819-x / ops-csv-insight · MIT · Codex 辅助开发的学习作品 ·
+      示例为模拟数据<br />内容在浏览器内处理；仅策划台和评测台在当前浏览器保存草稿。导出文件请自行保管。
+    </footer>
+    <script src="core.js"></script>
+    <script src="app.js?v=1.0.0"></script>
+  </body>
+</html>
